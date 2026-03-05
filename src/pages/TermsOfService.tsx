@@ -38,7 +38,7 @@ const TermsOfService = () => {
             </CardHeader>
             <CardContent className="text-gray-700 leading-relaxed space-y-4">
               <p>
-                Welcome to KGP Forge ("we," "our," or "us"). These Terms of Service ("Terms") govern your access to and use of our platform, including our website, services, and applications (collectively, the "Service").
+                Welcome to KGP Launchpad ("we," "our," or "us"). These Terms of Service ("Terms") govern your access to and use of our platform, including our website, services, and applications (collectively, the "Service").
               </p>
               <p className="font-semibold">
                 By accessing or using our Service, you agree to be bound by these Terms. If you do not agree to these Terms, please do not use our Service.
@@ -118,7 +118,7 @@ const TermsOfService = () => {
               
               <p className="font-semibold mt-4">Our Content:</p>
               <p>
-                The Service and its original content, features, and functionality are owned by KGP Forge and are protected by copyright, trademark, and other intellectual property laws.
+                The Service and its original content, features, and functionality are owned by KGP Launchpad and are protected by copyright, trademark, and other intellectual property laws.
               </p>
               
               <p className="font-semibold mt-4">User Responsibility:</p>
@@ -198,7 +198,7 @@ const TermsOfService = () => {
               
               <p className="font-semibold mt-4">Limitation of Liability:</p>
               <p>
-                To the maximum extent permitted by law, KGP Forge shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of or inability to use the Service.
+                To the maximum extent permitted by law, KGP Launchpad shall not be liable for any indirect, incidental, special, consequential, or punitive damages resulting from your use of or inability to use the Service.
               </p>
             </CardContent>
           </Card>
@@ -210,7 +210,7 @@ const TermsOfService = () => {
             </CardHeader>
             <CardContent className="text-gray-700 leading-relaxed space-y-4">
               <p>
-                You agree to indemnify and hold harmless KGP Forge, its affiliates, and their respective officers, directors, employees, and agents from any claims, damages, losses, liabilities, and expenses (including legal fees) arising from:
+                You agree to indemnify and hold harmless KGP Launchpad, its affiliates, and their respective officers, directors, employees, and agents from any claims, damages, losses, liabilities, and expenses (including legal fees) arising from:
               </p>
               <ul className="list-disc pl-6 space-y-2">
                 <li>Your use of the Service</li>
@@ -243,7 +243,7 @@ const TermsOfService = () => {
                 If you have any questions about these Terms, please contact us at:
               </p>
               <div className="bg-blue-50 p-4 rounded-lg mt-4">
-                <p className="font-semibold">KGP Forge</p>
+                <p className="font-semibold">KGP Launchpad</p>
                 <p>Email: support@iitkgplaunchpad.in</p>
                 <p>Address: IIT Kharagpur, West Bengal, India - 721302</p>
               </div>

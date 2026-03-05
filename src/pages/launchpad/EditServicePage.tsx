@@ -58,7 +58,7 @@ export const EditServicePage: React.FC = () => {
         toast.error('Failed to load service details')
         navigate('/alumni/services')
       }
-    } catch (error) {
+    } catch {
       toast.error('Error loading service')
       navigate('/alumni/services')
     } finally {
@@ -100,7 +100,7 @@ export const EditServicePage: React.FC = () => {
         const error = await response.json()
         toast.error(error.error || 'Failed to update service')
       }
-    } catch (error) {
+    } catch {
       toast.error('Something went wrong. Please try again.')
     } finally {
       setSaving(false)
@@ -190,6 +190,7 @@ export const EditServicePage: React.FC = () => {
                   <Input
                     id="price_range"
                     name="price_range"
+                    placeholder="e.g. ₹50,000 - ₹2,00,000"
                     value={formData.price_range}
                     onChange={handleChange}
                   />

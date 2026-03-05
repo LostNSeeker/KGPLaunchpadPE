@@ -10,6 +10,8 @@ import {
   Twitter,
 } from 'lucide-react'
 import kgp_logo from "../../images/kgp_logo.png"
+import LaunchpadLogo from "../../images/LaunchpadLOGO.png"
+import dvlaunchLogo from "../../images/dvlaunch_logo.jpeg"
 
 const data = {
   facebookLink: '#',
@@ -38,7 +40,7 @@ const data = {
     address: 'IIT Kharagpur, West Bengal',
   },
   company: {
-    name: 'KGP Forge',
+    name: 'KGP Launchpad',
     description:
       "Connecting students with alumni, showcasing innovation, and building the future of IIT Kharagpur's startup ecosystem.",
     logo: kgp_logo,
@@ -83,15 +85,34 @@ export const Footer: React.FC = () => {
       <div className="container mx-auto px-4 pt-16 pb-6 sm:px-6 lg:px-8 lg:pt-24">
         <div className="grid grid-cols-1 gap-8 lg:grid-cols-3">
           <div>
-            <div className="text-primary flex justify-center gap-2 sm:justify-start items-center">
+            <div className="text-primary flex justify-center gap-2 sm:justify-start items-center flex-wrap">
               <img
-                src={data.company.logo}
-                alt="logo"
-                className="h-10 w-10 object-contain"
+                src={LaunchpadLogo}
+                alt="KGP Launchpad"
+                className="h-16 w-auto object-contain"
               />
               <span className="text-2xl font-semibold">
                 {data.company.name}
               </span>
+            </div>
+            <div className="mt-4 flex justify-center sm:justify-start items-center gap-2">
+              <span className="text-sm text-muted-foreground">In partnership with</span>
+              <div>
+              <a
+                href="https://devlaunch.in"
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 rounded-lg px-2.5 py-1.5 text-muted-foreground hover:bg-muted hover:text-foreground transition"
+              >
+                <img
+                  src={dvlaunchLogo}
+                  alt="DevLaunch"
+                  className="h-8 object-contain"
+                />
+                <span className="text-sm font-medium">DevLaunch</span>
+              </a>
+              </div>
+             
             </div>
 
             <p className="text-muted-foreground mt-6 max-w-md text-center leading-relaxed sm:max-w-xs sm:text-left">

@@ -106,7 +106,7 @@ export const BlogPostPage: React.FC = () => {
       await navigator.clipboard.writeText(url)
       setShowCopied(true)
       setTimeout(() => setShowCopied(false), 2000)
-    } catch (error) {
+    } catch {
       const textarea = document.createElement('textarea')
       textarea.value = url
       textarea.style.position = 'fixed'

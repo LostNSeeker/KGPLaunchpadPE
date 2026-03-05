@@ -80,4 +80,13 @@
   .animate-grid-move {
     animation: gridMove 20s linear infinite;
   }
+
+  @keyframes sponsor-marquee {
+    0% {
+      transform: translateX(0);
+    }
+    100% {
+      transform: translateX(-50%);
+    }
+  }
 }

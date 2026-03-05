@@ -154,7 +154,7 @@ export const ProjectDetailPage: React.FC = () => {
             const relData = await rel.json()
             setRelated(relData.filter((p: any) => p.id !== data.id).slice(0, 6))
           }
-        } catch (_) {}
+        } catch { /* ignore related fetch */ }
       } else {
         console.error('Failed to fetch project')
         setProject(null)

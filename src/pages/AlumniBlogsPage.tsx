@@ -85,7 +85,7 @@ export const AlumniBlogsPage: React.FC = () => {
       if (res.ok) {
         setPosts(prev => prev.filter(p => p.id !== postId))
       }
-    } catch (e) {
+    } catch {
       // noop; could show a toast here
     } finally {
       setDeletingId(null)

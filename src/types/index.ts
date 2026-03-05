@@ -1,3 +1,14 @@
+export interface ServiceTimelineItem {
+  id: number;
+  title: string;
+  description: string;
+  date?: string;
+  image?: string;
+  status?: 'completed' | 'current' | 'upcoming';
+  category?: string;
+  sort_order?: number;
+}
+
 export interface Service {
   id: number;
   title: string;
@@ -17,6 +28,17 @@ export interface Service {
     email?: string;
   };
   is_active?: boolean;
+  timeline?: ServiceTimelineItem[];
+  reviews?: ServiceReview[];
+  allotted_students?: { id: number; name: string; avatar?: string; email?: string }[];
+}
+
+export interface ServiceReview {
+  id: number;
+  author_name: string;
+  content: string;
+  rating?: number;
+  created_at: string;
 }
 
 export interface ServiceRequest {

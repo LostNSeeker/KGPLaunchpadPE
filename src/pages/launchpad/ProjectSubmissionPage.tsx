@@ -110,7 +110,7 @@ export const ProjectSubmissionPage: React.FC = () => {
             <Label htmlFor="budget">Budget Range (Optional)</Label>
             <Input 
               id="budget"
-              placeholder="e.g. $1000 - $5000"
+              placeholder="e.g. ₹50,000 - ₹2,00,000"
               value={formData.budget_range}
               onChange={(e) => setFormData({...formData, budget_range: e.target.value})}
             />

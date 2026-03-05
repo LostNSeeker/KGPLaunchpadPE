@@ -31,10 +31,10 @@ export function ClientFeedback() {
       <div className="relative h-full container text-black mx-auto rounded-lg py-14 bg-white" ref={testimonialRef}>
         <article className={"max-w-screen-md mx-auto text-center space-y-2 mb-12"} >
           <TimelineContent as="h1" className={"xl:text-4xl text-3xl font-medium"} animationNum={0} customVariants={revealVariants} timelineRef={testimonialRef}>
-            Trusted by Startups and the worlds largest companies
+            Trusted by Founders and Students
           </TimelineContent>
           <TimelineContent as="p" className={"mx-auto text-gray-500"} animationNum={1} customVariants={revealVariants} timelineRef={testimonialRef}>
-            Lets hear how hypershpere clients feels about our service
+            Hear from founders who get work done and students who learn by doing.
           </TimelineContent>
         </article>
         <div className="lg:grid lg:grid-cols-3 gap-4 flex flex-col w-full px-4">
@@ -43,19 +43,19 @@ export function ClientFeedback() {
               <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:50px_56px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)] pointer-events-none"></div>
               <article className="mt-auto relative z-10">
                 <p className="text-gray-700 italic mb-6">
-                  "Hypersphere has been a game-changer for us. Their service is
-                  top-notch and their team is incredibly responsive."
+                  "KGP Launchpad has been a game-changer for us. We found talented
+                  students for our MVP and the launchpad team was incredibly responsive."
                 </p>
                 <div className="flex justify-between items-center border-t border-gray-100 pt-4">
                   <div>
                     <h2 className="font-semibold text-lg">
-                      Guillermo Rauch
+                      Priya Sharma
                     </h2>
-                    <p className="text-gray-500 text-sm">CEO of Enigma</p>
+                    <p className="text-gray-500 text-sm">Founder, TechVentures</p>
                   </div>
                   <img
                     src="https://images.unsplash.com/photo-1599566150163-29194dcaad36?q=80&w=687&auto=format&fit=crop"
-                    alt="Guillermo Rauch"
+                    alt="Priya Sharma"
                     className="w-12 h-12 rounded-full object-cover border border-gray-200"
                   />
                 </div>
@@ -64,17 +64,17 @@ export function ClientFeedback() {
             <TimelineContent animationNum={1} customVariants={revealVariants} timelineRef={testimonialRef} className="lg:flex-[3] flex-[4] lg:h-fit lg:shrink-0 flex flex-col justify-between relative bg-blue-600 text-white overflow-hidden rounded-lg border border-blue-500 p-6 shadow-md">
               <article className="mt-auto">
                 <p className="italic mb-6">
-                  "We've seen incredible results with Hypersphere. Their
-                  expertise, dedication."
+                  "We've seen incredible results with KGP Launchpad. Found the right
+                  developers through the launchpad — highly recommend."
                 </p>
                 <div className="flex justify-between items-center border-t border-blue-500/30 pt-4">
                   <div>
-                    <h2 className="font-semibold text-lg">Rika Shinoda</h2>
-                    <p className="text-blue-100 text-sm">CEO of Kintsugi</p>
+                    <h2 className="font-semibold text-lg">Arjun Mehta</h2>
+                    <p className="text-blue-100 text-sm">Founder, Kintsugi Labs</p>
                   </div>
                   <img
                     src="https://images.unsplash.com/photo-1512485694743-9c9538b4e6e0?q=80&w=687&auto=format&fit=crop"
-                    alt="Rika Shinoda"
+                    alt="Arjun Mehta"
                     className="w-12 h-12 rounded-full object-cover border-2 border-white/20"
                   />
                 </div>
@@ -85,19 +85,19 @@ export function ClientFeedback() {
             <TimelineContent animationNum={2} customVariants={revealVariants} timelineRef={testimonialRef} className="flex flex-col justify-between relative bg-[#111111] text-white overflow-hidden rounded-lg border border-gray-800 p-6 shadow-md">
               <article className="mt-auto">
                 <p className="text-gray-300 italic mb-6">
-                  "Their team is highly professional, and their innovative
-                  solutions have truly transformed the way we operate."
+                  "KGP Launchpad connected us with sharp IIT KGP talent. Professional
+                  and fair — the way we operate has improved a lot."
                 </p>
                 <div className="flex justify-between items-center border-t border-gray-800 pt-4">
                   <div>
                     <h2 className="font-semibold text-lg">
-                      Reacher
+                      Ananya Reddy
                     </h2>
-                    <p className="text-gray-400 text-sm">CEO of OdeaoLabs</p>
+                    <p className="text-gray-400 text-sm">Founder, Odeao Labs</p>
                   </div>
                   <img
                     src="https://images.unsplash.com/photo-1566753323558-f4e0952af115?q=80&w=1021&auto=format&fit=crop"
-                    alt="Reacher"
+                    alt="Ananya Reddy"
                     className="w-12 h-12 rounded-full object-cover border border-gray-700"
                   />
                 </div>
@@ -106,17 +106,17 @@ export function ClientFeedback() {
             <TimelineContent animationNum={3} customVariants={revealVariants} timelineRef={testimonialRef} className="flex flex-col justify-between relative bg-[#111111] text-white overflow-hidden rounded-lg border border-gray-800 p-6 shadow-md">
               <article className="mt-auto">
                 <p className="text-gray-300 italic mb-6">
-                  "We're extremely satisfied with Hypersphere. Their expertise
-                  and dedication have exceeded our expectations."
+                  "We're extremely satisfied with KGP Launchpad. The platform's
+                  expertise and dedication have exceeded our expectations."
                 </p>
                 <div className="flex justify-between items-center border-t border-gray-800 pt-4">
                   <div>
-                    <h2 className="font-semibold text-lg">John </h2>
-                    <p className="text-gray-400 text-sm">CEO of Labsbo</p>
+                    <h2 className="font-semibold text-lg">Rohan Verma</h2>
+                    <p className="text-gray-400 text-sm">Founder, Labsbo</p>
                   </div>
                   <img
                     src="https://images.unsplash.com/photo-1615109398623-88346a601842?q=80&w=687&auto=format&fit=crop"
-                    alt="John"
+                    alt="Rohan Verma"
                     className="w-12 h-12 rounded-full object-cover border border-gray-700"
                   />
                 </div>
@@ -125,19 +125,19 @@ export function ClientFeedback() {
             <TimelineContent animationNum={4} customVariants={revealVariants} timelineRef={testimonialRef} className="flex flex-col justify-between relative bg-[#111111] text-white overflow-hidden rounded-lg border border-gray-800 p-6 shadow-md">
               <article className="mt-auto">
                 <p className="text-gray-300 italic mb-6">
-                  "Their customer support is absolutely exceptional. They are
-                  always available, incredibly helpful."
+                  "Customer support on KGP Launchpad is exceptional. They're
+                  always available and helped us find the right student team."
                 </p>
                 <div className="flex justify-between items-center border-t border-gray-800 pt-4">
                   <div>
                     <h2 className="font-semibold text-lg">
-                      Steven Sunny
+                      Kavya Nair
                     </h2>
-                    <p className="text-gray-400 text-sm">CEO of boxefi</p>
+                    <p className="text-gray-400 text-sm">Founder, Boxefi</p>
                   </div>
                   <img
                     src="https://images.unsplash.com/photo-1740102074295-c13fae3e4f8a?q=80&w=687&auto=format&fit=crop"
-                    alt="Steven Sunny"
+                    alt="Kavya Nair"
                     className="w-12 h-12 rounded-full object-cover border border-gray-700"
                   />
                 </div>
@@ -148,16 +148,16 @@ export function ClientFeedback() {
             <TimelineContent animationNum={5} customVariants={revealVariants} timelineRef={testimonialRef} className="lg:flex-[3] flex-[4] flex flex-col justify-between relative bg-blue-600 text-white overflow-hidden rounded-lg border border-blue-500 p-6 shadow-md">
               <article className="mt-auto">
                 <p className="italic mb-6">
-                  "Hypersphere has been a key partner in our growth journey."
+                  "KGP Launchpad has been a key partner in our growth journey."
                 </p>
                 <div className="flex justify-between items-center border-t border-blue-500/30 pt-4">
                   <div>
-                    <h2 className="font-semibold text-lg">Guillermo Rauch</h2>
-                    <p className="text-blue-100 text-sm">CEO of OdeaoLabs</p>
+                    <h2 className="font-semibold text-lg">Vikram Singh</h2>
+                    <p className="text-blue-100 text-sm">Founder, Odeao Labs</p>
                   </div>
                   <img
                     src="https://images.unsplash.com/photo-1563237023-b1e970526dcb?q=80&w=765&auto=format&fit=crop"
-                    alt="Guillermo Rauch"
+                    alt="Vikram Singh"
                     className="w-12 h-12 rounded-full object-cover border-2 border-white/20"
                   />
                 </div>
@@ -167,19 +167,18 @@ export function ClientFeedback() {
               <div className="absolute bottom-0 left-0 right-0 top-0 bg-[linear-gradient(to_right,#4f4f4f2e_1px,transparent_1px),linear-gradient(to_bottom,#4f4f4f2e_1px,transparent_1px)] bg-[size:50px_56px] [mask-image:radial-gradient(ellipse_80%_50%_at_50%_0%,#000_70%,transparent_110%)] pointer-events-none"></div>
               <article className="mt-auto relative z-10">
                 <p className="text-gray-700 italic mb-6">
-                  "Hypersphere has been a true game-changer for us. Their
-                  exceptional service, combined with their deep expertise and
-                  commitment to excellence, has made a significant impact on our
-                  business."
+                  "KGP Launchpad has been a true game-changer for us. Exceptional
+                  service and commitment to connecting founders with IIT KGP talent
+                  have made a real impact on our business."
                 </p>
                 <div className="flex justify-between items-center border-t border-gray-100 pt-4">
                   <div>
-                    <h2 className="font-semibold text-lg">Paul Brauch</h2>
-                    <p className="text-gray-500 text-sm">CTO of Spectrum</p>
+                    <h2 className="font-semibold text-lg">Aditya Krishnan</h2>
+                    <p className="text-gray-500 text-sm">CTO, Spectrum</p>
                   </div>
                   <img
                     src="https://images.unsplash.com/photo-1590086782957-93c06ef21604?q=80&w=687&auto=format&fit=crop"
-                    alt="Paul Brauch"
+                    alt="Aditya Krishnan"
                     className="w-12 h-12 rounded-full object-cover border border-gray-200"
                   />
                 </div>

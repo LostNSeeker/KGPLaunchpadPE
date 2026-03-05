@@ -59,7 +59,7 @@ export const CreateServicePage: React.FC = () => {
         const error = await response.json()
         toast.error(error.error || 'Failed to create service')
       }
-    } catch (error) {
+    } catch {
       toast.error('Something went wrong. Please try again.')
     } finally {
       setLoading(false)
@@ -128,7 +128,7 @@ export const CreateServicePage: React.FC = () => {
                   <Input
                     id="price_range"
                     name="price_range"
-                    placeholder="e.g. $1000 - $5000 or $50/hr"
+                    placeholder="e.g. ₹50,000 - ₹2,00,000 or ₹500/hr"
                     value={formData.price_range}
                     onChange={handleChange}
                   />

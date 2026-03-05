@@ -29,7 +29,7 @@ export const MyServicesPage: React.FC = () => {
       } else {
         toast.error('Failed to fetch your services')
       }
-    } catch (error) {
+    } catch {
       toast.error('Error loading services')
     } finally {
       setLoading(false)
@@ -51,7 +51,7 @@ export const MyServicesPage: React.FC = () => {
       } else {
         toast.error('Failed to delete service')
       }
-    } catch (error) {
+    } catch {
       toast.error('Error deleting service')
     }
   }

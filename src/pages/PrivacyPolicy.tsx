@@ -317,7 +317,7 @@ const PrivacyPolicy = () => (
                             If you have any questions, concerns, or requests regarding this Privacy Policy or our data practices, please contact us:
                         </p>
                         <div className="bg-blue-50 p-6 rounded-lg mt-4">
-                            <p className="font-semibold text-gray-900 mb-3">KGP Forge</p>
+                            <p className="font-semibold text-gray-900 mb-3">KGP Launchpad</p>
                             <div className="space-y-2 text-gray-700">
                                 <p><strong>Privacy Officer:</strong> privacy@iitkgplaunchpad.in</p>
                                 <p><strong>General Support:</strong> support@iitkgplaunchpad.in</p>

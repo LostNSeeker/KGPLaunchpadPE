@@ -12,7 +12,7 @@ export function formatDate(dateString: string) {
     if (typeof value === "object") return value as T
     try {
       return JSON.parse(value) as T
-    } catch (error) {
+    } catch {
       console.error("Invalid JSON field:", value)
       return null
     }

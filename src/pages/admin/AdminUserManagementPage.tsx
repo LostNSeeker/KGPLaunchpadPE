@@ -81,7 +81,7 @@ export const AdminUserManagementPage: React.FC = () => {
                 const err = await res.json()
                 toast.error(err.error || 'Failed to update user status')
             }
-        } catch (error) {
+        } catch {
             toast.error('Something went wrong')
         } finally {
             setProcessingId(null)

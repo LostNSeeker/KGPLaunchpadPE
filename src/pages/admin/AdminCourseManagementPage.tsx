@@ -78,7 +78,7 @@ export const AdminCourseManagementPage: React.FC = () => {
             } else {
                 toast.error('Failed to update course')
             }
-        } catch (error) {
+        } catch {
             toast.error('Error saving course')
         } finally {
             setIsSaving(false)

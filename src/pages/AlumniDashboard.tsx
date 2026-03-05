@@ -3,7 +3,7 @@ import { useAuth } from '../contexts/AuthContext'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Badge } from '../components/ui/badge'
 import { Button } from '../components/ui/button'
-import { Users, BookOpen, Bell, Plus, FilePlus2, Briefcase, Loader2, TrendingUp, Clock, CheckCircle, AlertCircle } from 'lucide-react'
+import { Users, BookOpen, Bell, Briefcase, Loader2, Clock, CheckCircle, AlertCircle } from 'lucide-react'
 import { Link } from 'react-router-dom'
 import { getApiUrl } from '../config'
 
@@ -11,9 +11,7 @@ interface DashboardStats {
   active_projects: number
   total_projects: number
   mentees: number
-  blog_posts: number
-  pending_mentorship_requests: number
-  pending_project_applications: number
+  service_requests_count: number
 }
 
 interface RecentActivity {
@@ -31,9 +29,7 @@ export const AlumniDashboard: React.FC = () => {
     active_projects: 0,
     total_projects: 0,
     mentees: 0,
-    blog_posts: 0,
-    pending_mentorship_requests: 0,
-    pending_project_applications: 0
+    service_requests_count: 0
   })
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([])
   const [loading, setLoading] = useState(true)
@@ -43,71 +39,38 @@ export const AlumniDashboard: React.FC = () => {
       if (!token) return
       
       try {
-        // Load dashboard stats
         const statsRes = await fetch(getApiUrl('/api/alumni/dashboard-stats'), {
           headers: { Authorization: `Bearer ${token}` },
         })
         if (statsRes.ok) {
           const statsData = await statsRes.json()
-          setStats(statsData)
+          setStats((prev) => ({
+            ...prev,
+            ...statsData,
+            service_requests_count: 0
+          }))
         }
 
-        // Build recent activity from supported endpoints
-        const [mentorshipRes, applicationsRes, projectsRes] = await Promise.all([
-          fetch(getApiUrl('/api/mentorship/requests'), { headers: { Authorization: `Bearer ${token}` } }),
-          fetch(getApiUrl('/api/alumni/project-applications'), { headers: { Authorization: `Bearer ${token}` } }),
-          fetch(getApiUrl('/api/alumni/projects'), { headers: { Authorization: `Bearer ${token}` } })
-        ])
-
+        // Fetch my service requests (applied for services) for count and recent activity
+        const requestsRes = await fetch(getApiUrl('/api/launchpad/my-requests'), {
+          headers: { Authorization: `Bearer ${token}` }
+        })
         const activities: RecentActivity[] = []
-
-        if (mentorshipRes.ok) {
-          const mentorshipData = await mentorshipRes.json()
-          for (const r of mentorshipData) {
+        if (requestsRes.ok) {
+          const requestsData = await requestsRes.json()
+          const list = Array.isArray(requestsData) ? requestsData : requestsData.requests || []
+          setStats((prev) => ({ ...prev, service_requests_count: list.length }))
+          for (const r of list.slice(0, 10)) {
             activities.push({
               id: r.id,
-              type: 'mentorship',
-              title: `Mentorship request from ${r.other_user_name || 'student'}`,
-              description: r.message || 'Mentorship request',
+              type: 'project',
+              title: r.project_type ? `Service: ${r.project_type}` : 'Service request',
+              description: r.description || r.project_type || 'Ask Services request',
               status: r.status || 'pending',
               created_at: r.created_at
             })
           }
         }
-
-        if (applicationsRes.ok) {
-          const applicationsData = await applicationsRes.json()
-          for (const a of applicationsData) {
-            activities.push({
-              id: a.id,
-              type: 'project_application',
-              title: `${a.student_name || 'Student'} applied to ${a.project_title || 'your project'}`,
-              description: a.message || 'Project application',
-              status: a.status || 'pending',
-              created_at: a.created_at
-            })
-          }
-        }
-
-
-        if (projectsRes.ok) {
-          const projectsData = await projectsRes.json()
-          // Add ongoing and completed projects
-          for (const p of projectsData) {
-            if (p.status === 'active' || p.status === 'completed') {
-              activities.push({
-                id: p.id,
-                type: 'project',
-                title: p.title,
-                description: p.description.length > 100 ? p.description.substring(0, 100) + '...' : p.description,
-                status: p.status,
-                created_at: p.created_at
-              })
-            }
-          }
-        }
-
-        // Sort desc by created_at and keep recent ones
         activities.sort((a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime())
         setRecentActivity(activities.slice(0, 10))
       } finally {
@@ -189,48 +152,8 @@ export const AlumniDashboard: React.FC = () => {
           </div>
         </div>
 
-        {/* Statistics Cards with Enhanced Animations */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-12">
-          <Card className="group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-0 bg-white/80 backdrop-blur-sm relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-blue-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-blue-100 to-blue-200 rounded-full -translate-y-10 translate-x-10 group-hover:scale-150 transition-transform duration-700"></div>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
-              <CardTitle className="text-sm font-medium text-gray-600">Active Projects</CardTitle>
-              <div className="p-2 rounded-xl bg-gradient-to-br from-blue-100 to-blue-200 group-hover:from-blue-200 group-hover:to-blue-300 transition-all duration-300">
-                <Briefcase className="h-5 w-5 text-blue-600" />
-              </div>
-            </CardHeader>
-            <CardContent className="relative z-10">
-              <div className="text-3xl font-bold text-gray-900 mb-1">
-                {loading ? <Loader2 className="h-8 w-8 animate-spin" /> : stats.active_projects}
-              </div>
-              <p className="text-xs text-gray-500 flex items-center">
-                <TrendingUp className="h-3 w-3 mr-1 text-green-500" />
-                Currently showcasing
-              </p>
-            </CardContent>
-          </Card>
-
-          <Card className="group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-0 bg-white/80 backdrop-blur-sm relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-green-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-green-100 to-green-200 rounded-full -translate-y-10 translate-x-10 group-hover:scale-150 transition-transform duration-700"></div>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
-              <CardTitle className="text-sm font-medium text-gray-600">Total Projects</CardTitle>
-              <div className="p-2 rounded-xl bg-gradient-to-br from-green-100 to-green-200 group-hover:from-green-200 group-hover:to-green-300 transition-all duration-300">
-                <FilePlus2 className="h-5 w-5 text-green-600" />
-              </div>
-            </CardHeader>
-            <CardContent className="relative z-10">
-              <div className="text-3xl font-bold text-gray-900 mb-1">
-                {loading ? <Loader2 className="h-8 w-8 animate-spin" /> : stats.total_projects}
-              </div>
-              <p className="text-xs text-gray-500 flex items-center">
-                <CheckCircle className="h-3 w-3 mr-1 text-green-500" />
-                All time created
-              </p>
-            </CardContent>
-          </Card>
-
+        {/* Statistics Cards — project stats removed for alumni */}
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-12">
           <Card className="group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-0 bg-white/80 backdrop-blur-sm relative overflow-hidden">
             <div className="absolute inset-0 bg-gradient-to-br from-purple-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
             <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-purple-100 to-purple-200 rounded-full -translate-y-10 translate-x-10 group-hover:scale-150 transition-transform duration-700"></div>
@@ -251,59 +174,13 @@ export const AlumniDashboard: React.FC = () => {
             </CardContent>
           </Card>
 
-          <Card className="group hover:shadow-2xl transition-all duration-500 hover:-translate-y-2 border-0 bg-white/80 backdrop-blur-sm relative overflow-hidden">
-            <div className="absolute inset-0 bg-gradient-to-br from-orange-50/50 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-500"></div>
-            <div className="absolute top-0 right-0 w-20 h-20 bg-gradient-to-br from-orange-100 to-orange-200 rounded-full -translate-y-10 translate-x-10 group-hover:scale-150 transition-transform duration-700"></div>
-            <CardHeader className="flex flex-row items-center justify-between space-y-0 pb-2 relative z-10">
-              <CardTitle className="text-sm font-medium text-gray-600">Blog Posts</CardTitle>
-              <div className="p-2 rounded-xl bg-gradient-to-br from-orange-100 to-orange-200 group-hover:from-orange-200 group-hover:to-orange-300 transition-all duration-300">
-                <BookOpen className="h-5 w-5 text-orange-600" />
-              </div>
-            </CardHeader>
-            <CardContent className="relative z-10">
-              <div className="text-3xl font-bold text-gray-900 mb-1">
-                {loading ? <Loader2 className="h-8 w-8 animate-spin" /> : stats.blog_posts}
-              </div>
-              <p className="text-xs text-gray-500 flex items-center">
-                <BookOpen className="h-3 w-3 mr-1 text-orange-500" />
-                Published articles
-              </p>
-            </CardContent>
-          </Card>
-        </div>
+          </div>
 
-        {/* Quick Actions with Enhanced Animations */}
+        {/* Quick Actions with Enhanced Animations — Manage Services first; project functionality removed */}
         <div className="mb-12">
           <h2 className="text-2xl font-bold text-gray-900 mb-6">Quick Actions</h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-            <Button asChild className="h-24 flex flex-col items-center justify-center bg-gradient-to-br from-blue-100 to-blue-200 hover:from-blue-200 hover:to-blue-300 text-blue-700 shadow hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-              <Link to="/alumni/create-project">
-                <div className="p-3 rounded-full bg-white/20 group-hover:bg-white/30 transition-all duration-300 mb-2">
-                  <Plus className="h-6 w-6" />
-                </div>
-                <span className="text-sm font-semibold">Create Project</span>
-              </Link>
-            </Button>
-            
-            <Button asChild variant="outline" className="h-24 flex flex-col items-center justify-center bg-gradient-to-br from-green-100 to-emerald-200 hover:from-green-200 hover:to-emerald-300 text-green-700 shadow hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-              <Link to="/alumni/create-blog">
-                <div className="p-3 rounded-full bg-green-100 group-hover:bg-green-200 transition-all duration-300 mb-2">
-                  <FilePlus2 className="h-6 w-6" />
-                </div>
-                <span className="text-sm font-semibold">Write Blog</span>
-              </Link>
-            </Button>
-            
-            <Button asChild variant="outline" className="h-24 flex flex-col items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-200 hover:from-indigo-200 hover:to-purple-300 text-indigo-700 shadow hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-              <Link to="/alumni/mentees">
-                <div className="p-3 rounded-full bg-purple-100 group-hover:bg-purple-200 transition-all duration-300 mb-2">
-                  <Users className="h-6 w-6" />
-                </div>
-                <span className="text-sm font-semibold">View Mentees</span>
-              </Link>
-            </Button>
-            
-            <Button asChild variant="outline" className="h-24 flex flex-col items-center justify-center bg-gradient-to-br from-yellow-100 to-orange-200 hover:from-yellow-200 hover:to-orange-300 text-yellow-700 shadow hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+            <Button asChild className="h-24 flex flex-col items-center justify-center bg-gradient-to-br from-yellow-100 to-orange-200 hover:from-yellow-200 hover:to-orange-300 text-yellow-800 shadow hover:shadow-md transition-all duration-300 hover:-translate-y-1">
               <Link to="/alumni/services">
                 <div className="p-3 rounded-full bg-yellow-100 group-hover:bg-yellow-200 transition-all duration-300 mb-2">
                   <Briefcase className="h-6 w-6" />
@@ -312,12 +189,21 @@ export const AlumniDashboard: React.FC = () => {
               </Link>
             </Button>
 
-            <Button asChild variant="outline" className="h-24 flex flex-col items-center justify-center bg-gradient-to-br from-teal-100 to-cyan-200 hover:from-teal-200 hover:to-cyan-300 text-teal-700 shadow hover:shadow-md transition-all duration-300 hover:-translate-y-1">
-              <Link to="/alumni/projects">
-                <div className="p-3 rounded-full bg-teal-100 group-hover:bg-cyan-200 transition-all duration-300 mb-2">
-                  <Briefcase className="h-6 w-6" />
+            <Button asChild variant="outline" className="h-24 flex flex-col items-center justify-center bg-gradient-to-br from-indigo-100 to-purple-200 hover:from-indigo-200 hover:to-purple-300 text-indigo-700 shadow hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+              <Link to="/alumni/mentees">
+                <div className="p-3 rounded-full bg-purple-100 group-hover:bg-purple-200 transition-all duration-300 mb-2">
+                  <Users className="h-6 w-6" />
                 </div>
-                <span className="text-sm font-semibold">My Projects</span>
+                <span className="text-sm font-semibold">View Mentees</span>
+              </Link>
+            </Button>
+
+            <Button asChild variant="outline" className="h-24 flex flex-col items-center justify-center bg-gradient-to-br from-sky-100 to-blue-200 hover:from-sky-200 hover:to-blue-300 text-sky-700 shadow hover:shadow-md transition-all duration-300 hover:-translate-y-1">
+              <Link to="/resources">
+                <div className="p-3 rounded-full bg-sky-100 group-hover:bg-sky-200 transition-all duration-300 mb-2">
+                  <BookOpen className="h-6 w-6" />
+                </div>
+                <span className="text-sm font-semibold">Resources</span>
               </Link>
             </Button>
           </div>
@@ -416,42 +302,22 @@ export const AlumniDashboard: React.FC = () => {
             </CardHeader>
             <CardContent>
               <div className="space-y-4">
-                <div className="flex items-center justify-between p-4 rounded-lg bg-orange-50 border border-orange-200">
-                  <div className="flex items-center space-x-3">
-                    <div className="p-2 rounded-full bg-orange-100">
-                      <Users className="h-4 w-4 text-orange-600" />
-                    </div>
-                    <div>
-                      <p className="text-sm font-medium text-gray-900">Mentorship Requests</p>
-                      <p className="text-xs text-gray-500">Students seeking guidance</p>
-                    </div>
-                  </div>
-                  <div className="text-right">
-                    <div className="text-2xl font-bold text-orange-600">
-                      {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : stats.pending_mentorship_requests}
-                    </div>
-                    <Button size="sm" variant="outline" className="mt-1" asChild>
-                      <Link to="/alumni/mentees">View</Link>
-                    </Button>
-                  </div>
-                </div>
-
                 <div className="flex items-center justify-between p-4 rounded-lg bg-blue-50 border border-blue-200">
                   <div className="flex items-center space-x-3">
                     <div className="p-2 rounded-full bg-blue-100">
                       <Briefcase className="h-4 w-4 text-blue-600" />
                     </div>
                     <div>
-                      <p className="text-sm font-medium text-gray-900">Project Applications</p>
-                      <p className="text-xs text-gray-500">Students applying to your projects</p>
+                      <p className="text-sm font-medium text-gray-900">Applied for services</p>
+                      <p className="text-xs text-gray-500">Your Ask Services requests</p>
                     </div>
                   </div>
                   <div className="text-right">
                     <div className="text-2xl font-bold text-blue-600">
-                      {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : stats.pending_project_applications}
+                      {loading ? <Loader2 className="h-6 w-6 animate-spin" /> : stats.service_requests_count}
                     </div>
                     <Button size="sm" variant="outline" className="mt-1" asChild>
-                      <Link to="/alumni/project-applications">View</Link>
+                      <Link to="/launchpad">View</Link>
                     </Button>
                   </div>
                 </div>

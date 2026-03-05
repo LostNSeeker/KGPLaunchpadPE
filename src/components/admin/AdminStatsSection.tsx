@@ -59,7 +59,7 @@ export const AdminStatsSection: React.FC = () => {
             } else {
                 toast.error('Failed to update')
             }
-        } catch (error) {
+        } catch {
             toast.error('Error updating stat')
         } finally {
             setUpdating(null)

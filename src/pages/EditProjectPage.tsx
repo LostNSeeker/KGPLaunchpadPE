@@ -443,7 +443,7 @@ export const EditProjectPage: React.FC = () => {
                 <Input 
                   value={form.funding || ''} 
                   onChange={(e) => setForm({ ...form, funding: e.target.value })} 
-                  placeholder="e.g., Seed Round - $500K"
+                  placeholder="e.g., Seed Round - ₹40L"
                 />
               </div>
 

@@ -1,8 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
-import { Calendar, MapPin, Clock, Users, Mic, Video, Coffee, Presentation, ArrowRight, Search, ChevronDown, ChevronUp, Mail, Phone, Globe } from 'lucide-react'
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '../../components/ui/card'
+import { Calendar, Clock, ArrowRight, ChevronDown, ChevronUp } from 'lucide-react'
+import { Card, CardContent, CardFooter } from '../../components/ui/card'
 import { Button } from '../../components/ui/button'
 import { Badge } from '../../components/ui/badge'
 import { Input } from '../../components/ui/input'
@@ -11,18 +11,6 @@ import { getApiUrl } from '../../config'
 import { toast } from 'react-hot-toast'
 import type { Event } from '../../types'
 import { Loader2 } from 'lucide-react'
-
-// Helper to get icon based on event type
-const getEventIcon = (type: string) => {
-    switch (type) {
-        case 'Podcast': return <Mic className="h-4 w-4" />
-        case 'Seminar': return <Presentation className="h-4 w-4" />
-        case 'Webinar': return <Video className="h-4 w-4" />
-        case 'Fundae Session': return <Coffee className="h-4 w-4" />
-        case 'Meeting': return <Users className="h-4 w-4" />
-        default: return <Calendar className="h-4 w-4" />
-    }
-}
 
 // Countdown Timer Component
 const CountdownTimer: React.FC<{ targetDate: string }> = ({ targetDate }) => {
@@ -101,7 +89,7 @@ export const EventsPage: React.FC = () => {
     const [loading, setLoading] = useState(true)
     const [enrollingId, setEnrollingId] = useState<number | null>(null)
     const [selectedType, setSelectedType] = useState<string>('All')
-    const [searchQuery, setSearchQuery] = useState('')
+    const [searchQuery] = useState('')
     const [email, setEmail] = useState('')
 
     const fetchEvents = async () => {
@@ -113,8 +101,8 @@ export const EventsPage: React.FC = () => {
                 const data = await res.json()
                 setEvents(data)
             }
-        } catch (error) {
-            console.error('Error fetching events:', error)
+        } catch (err) {
+            console.error('Error fetching events:', err)
             toast.error('Failed to load events')
         } finally {
             setLoading(false)
@@ -148,7 +136,7 @@ export const EventsPage: React.FC = () => {
                 const error = await res.json()
                 toast.error(error.error || 'Failed to register')
             }
-        } catch (error) {
+        } catch {
             toast.error('Something went wrong')
         } finally {
             setEnrollingId(null)
@@ -210,7 +198,7 @@ export const EventsPage: React.FC = () => {
                                 <Button size="lg" className="bg-purple-600 hover:bg-purple-700 text-white px-8">
                                     Get Started
                                 </Button>
-                                <Button size="lg" variant="outline" className="border-purple-500 text-purple-400 hover:bg-purple-500/10">
+                                <Button size="lg" variant="outline" className="border-2 border-purple-400 text-purple-300 hover:bg-purple-500/20 hover:border-purple-300 hover:text-white">
                                     Learn More
                                 </Button>
                             </div>
@@ -458,11 +446,20 @@ export const EventsPage: React.FC = () => {
                     </div>
 
                     <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
-                        {[1, 2, 3, 4, 5, 6, 7, 8].map((i) => (
+                        {[
+                            'https://images.unsplash.com/photo-1540575467063-178a50c2df87?w=400',
+                            'https://images.unsplash.com/photo-1475721027785-f74eccf877e2?w=400',
+                            'https://images.unsplash.com/photo-1505373877841-8d25f7d46678?w=400',
+                            'https://images.unsplash.com/photo-1511578314322-379afb476865?w=400',
+                            'https://images.unsplash.com/photo-1492684223066-81342ee5ff30?w=400',
+                            'https://images.unsplash.com/photo-1501281668745-f7f57925c3b4?w=400',
+                            'https://images.unsplash.com/photo-1543269865-cbf427effbad?w=400',
+                            'https://images.unsplash.com/photo-1523580494863-6f3031224c94?w=400'
+                        ].map((src, i) => (
                             <div key={i} className="relative overflow-hidden rounded-xl aspect-square group cursor-pointer">
                                 <img 
-                                    src={`https://images.unsplash.com/photo-154057546706${i}-178a50c2df87?w=400`}
-                                    alt={`Gallery ${i}`}
+                                    src={src}
+                                    alt={`Gallery ${i + 1}`}
                                     className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                 />
                                 <div className="absolute inset-0 bg-purple-600/0 group-hover:bg-purple-600/30 transition-colors duration-300"></div>
@@ -499,7 +496,7 @@ export const EventsPage: React.FC = () => {
                         <Button size="lg" className="bg-purple-600 hover:bg-purple-700 px-8" asChild>
                             <Link to="/register">Get Started</Link>
                         </Button>
-                        <Button size="lg" variant="outline" className="border-white/30 text-white hover:bg-white/10 px-8" asChild>
+                        <Button size="lg" variant="outline" className="border-2 border-purple-400 text-purple-300 hover:bg-purple-500/30 hover:text-white px-8" asChild>
                             <Link to="/about">Learn More</Link>
                         </Button>
                     </div>

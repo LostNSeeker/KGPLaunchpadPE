@@ -1,9 +1,8 @@
 import React, { useState, useEffect } from 'react'
 import { useParams, Link, useNavigate } from 'react-router-dom'
-import { ArrowLeft, Calendar, Clock, MapPin, User, Mail, Globe, Loader2, Users, Phone, ExternalLink } from 'lucide-react'
+import { ArrowLeft, Calendar, Clock, MapPin, User, Mail, Globe, Loader2, Users, ExternalLink } from 'lucide-react'
 import { Button } from '../../components/ui/button'
 import { Card, CardContent, CardHeader, CardTitle } from '../../components/ui/card'
-import { Badge } from '../../components/ui/badge'
 import { Input } from '../../components/ui/input'
 import { useAuth } from '../../contexts/AuthContext'
 import { getApiUrl } from '../../config'
@@ -33,8 +32,8 @@ export const EventDetailPage: React.FC = () => {
                     toast.error('Event not found')
                     navigate('/events')
                 }
-            } catch (error) {
-                console.error('Error fetching event:', error)
+            } catch (err) {
+                console.error('Error fetching event:', err)
                 toast.error('Failed to load event')
             } finally {
                 setLoading(false)
@@ -48,8 +47,8 @@ export const EventDetailPage: React.FC = () => {
                     const data = await res.json()
                     setRelatedEvents(data.filter((e: Event) => e.id !== Number(id)).slice(0, 4))
                 }
-            } catch (error) {
-                console.error('Error fetching related events:', error)
+            } catch (err) {
+                console.error('Error fetching related events:', err)
             }
         }
 
@@ -88,9 +87,9 @@ export const EventDetailPage: React.FC = () => {
                 const error = await res.json()
                 toast.error(error.error || 'Failed to register')
             }
-        } catch (error) {
-            toast.error('Something went wrong')
-        } finally {
+} catch {
+                toast.error('Something went wrong')
+            } finally {
             setEnrolling(false)
         }
     }

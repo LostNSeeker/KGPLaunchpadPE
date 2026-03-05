@@ -2,7 +2,7 @@ import React from 'react'
 import { useAuth } from '../contexts/AuthContext'
 import { Card, CardContent, CardHeader, CardTitle } from '../components/ui/card'
 import { Button } from '../components/ui/button'
-import { Users, MessageCircle, Shield, Loader2, Briefcase, GraduationCap, Calendar } from 'lucide-react'
+import { Users, MessageCircle, Shield, Loader2, Briefcase, GraduationCap, Calendar, BookOpen, IdCard, ListOrdered } from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import { AdminStatsSection } from '../components/admin/AdminStatsSection'
 
@@ -136,6 +136,57 @@ export const AdminDashboard: React.FC = () => {
                 Create and manage events like webinars and podcasts
               </p>
               <Button className="w-full">Manage Events</Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/admin/resources')}>
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-cyan-100 rounded-lg">
+                  <BookOpen className="h-6 w-6 text-cyan-600" />
+                </div>
+                <CardTitle>Manage Resources</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 mb-4">
+                Add and manage startup resources, guides, and reports
+              </p>
+              <Button className="w-full">Manage Resources</Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/admin/student-verification')}>
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-teal-100 rounded-lg">
+                  <IdCard className="h-6 w-6 text-teal-600" />
+                </div>
+                <CardTitle>Student Verification</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 mb-4">
+                View student roll numbers and ID card submissions
+              </p>
+              <Button className="w-full">View Verifications</Button>
+            </CardContent>
+          </Card>
+
+          <Card className="hover:shadow-lg transition-shadow cursor-pointer" onClick={() => navigate('/admin/service-timeline')}>
+            <CardHeader>
+              <div className="flex items-center gap-3">
+                <div className="p-3 bg-violet-100 rounded-lg">
+                  <ListOrdered className="h-6 w-6 text-violet-600" />
+                </div>
+                <CardTitle>Service timeline</CardTitle>
+              </div>
+            </CardHeader>
+            <CardContent>
+              <p className="text-gray-600 mb-4">
+                Manage “How we do it” timeline for each launchpad service
+              </p>
+              <Button className="w-full">Manage timelines</Button>
             </CardContent>
           </Card>
         </div>

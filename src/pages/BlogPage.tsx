@@ -94,7 +94,7 @@ export const BlogPage: React.FC = () => {
       await navigator.clipboard.writeText(url);
       setCopiedId(postId);
       setTimeout(() => setCopiedId(null), 2000);
-    } catch (error) {
+    } catch {
       // Fallback for older browsers
       const textarea = document.createElement('textarea');
       textarea.value = url;

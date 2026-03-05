@@ -45,16 +45,22 @@ import { MyServicesPage } from './pages/launchpad/MyServicesPage'
 import { CreateServicePage } from './pages/launchpad/CreateServicePage'
 import { EditServicePage } from './pages/launchpad/EditServicePage'
 import { AdminServiceRequestsPage } from './pages/AdminServiceRequestsPage'
+import { AskServicesPage } from './pages/AskServicesPage'
+import { StudentServiceProfilePage } from './pages/StudentServiceProfilePage'
+import { ResourcesPage } from './pages/ResourcesPage'
 import { CoursesPage } from './pages/courses/CoursesPage'
 import { CourseDetailsPage } from './pages/courses/CourseDetailsPage'
 import { MyCoursesPage } from './pages/courses/MyCoursesPage'
 import { AdminCoursesPage } from './pages/admin/AdminCoursesPage'
 import { AdminCourseManagementPage } from './pages/admin/AdminCourseManagementPage'
 import { AdminUserManagementPage } from './pages/admin/AdminUserManagementPage'
+import { AdminStudentVerificationPage } from './pages/admin/AdminStudentVerificationPage'
+import { AdminServiceTimelinePage } from './pages/admin/AdminServiceTimelinePage'
 import NavbarDemo from './pages/NavbarDemo'
 
 import { AdminEventsPage } from './pages/admin/AdminEventsPage'
 import { AdminEventDetailsPage } from './pages/admin/AdminEventDetailsPage'
+import { AdminResourcesPage } from './pages/admin/AdminResourcesPage'
 import { EventsPage } from './pages/events/EventsPage'
 import { EventDetailPage } from './pages/events/EventDetailPage'
 import { MyEventsPage } from './pages/events/MyEventsPage'
@@ -79,12 +85,12 @@ function App() {
             <Route path="/mentors" element={<MentorsPage />} />
             <Route path="/find-mentors" element={<FindMentorsPage />} />
             <Route path="/alumni-connect" element={<AlumniConnectPage />} />
-            
+
             {/* Launchpad Routes */}
             <Route path="/launchpad" element={<LaunchpadPage />} />
             <Route path="/launchpad/services/:id" element={<ServiceDetailPage />} />
             <Route path="/launchpad/submit-project" element={<ProjectSubmissionPage />} />
-            
+
             {/* Manage Services Routes */}
             <Route path="/alumni/services" element={<MyServicesPage />} />
             <Route path="/alumni/services/create" element={<CreateServicePage />} />
@@ -92,14 +98,17 @@ function App() {
 
             <Route path="/blog" element={<BlogPage />} />
             <Route path="/blog/:id" element={<BlogPostPage />} />
-            
+
             {/* Courses Routes */}
             <Route path="/courses" element={<CoursesPage />} />
             <Route path="/courses/:id" element={<CourseDetailsPage />} />
             <Route path="/my-courses" element={<MyCoursesPage />} />
-            
+
             <Route path="/alumni/blogs/:id/edit" element={<EditBlogPage />} />
             <Route path="/student-dashboard" element={<StudentDashboard />} />
+            <Route path="/ask-services" element={<AskServicesPage />} />
+            <Route path="/student-service-profile" element={<StudentServiceProfilePage />} />
+            <Route path="/resources/*" element={<ResourcesPage />} />
             <Route path="/student/applications" element={<StudentApplicationsPage />} />
             <Route path="/founders-dashboard" element={<AlumniDashboard />} />
             <Route path="/dashboard" element={<DashboardRouter />} />
@@ -125,22 +134,25 @@ function App() {
             <Route path="/admin/support" element={<AdminSupportPage />} />
             <Route path="/admin/launchpad/requests" element={<AdminServiceRequestsPage />} />
             <Route path="/admin/users" element={<AdminUserManagementPage />} />
-            
+            <Route path="/admin/student-verification" element={<AdminStudentVerificationPage />} />
+            <Route path="/admin/service-timeline" element={<AdminServiceTimelinePage />} />
+
             <Route path="/admin/courses" element={<AdminCoursesPage />} />
             <Route path="/admin/courses/:id" element={<AdminCourseManagementPage />} />
-            
+
             {/* Events Routes */}
             <Route path="/events" element={<EventsPage />} />
             <Route path="/events/:id" element={<EventDetailPage />} />
             <Route path="/my-events" element={<MyEventsPage />} />
             <Route path="/admin/events" element={<AdminEventsPage />} />
             <Route path="/admin/events/:id" element={<AdminEventDetailsPage />} />
-            
+            <Route path="/admin/resources" element={<AdminResourcesPage />} />
+
             <Route path="/navbar-demo" element={<NavbarDemo />} />
           </Routes>
         </Layout>
       </Router>
     </AuthProvider>
   )
-}     
+}
 export default App

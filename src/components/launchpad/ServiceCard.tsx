@@ -3,8 +3,6 @@ import { Link } from 'react-router-dom'
 import type { Service } from '../../types'
 import { Card, CardContent, CardFooter, CardHeader } from '../ui/card'
 import { Badge } from '../ui/badge'
-import { Avatar, AvatarFallback, AvatarImage } from '../ui/avatar'
-import { getApiUrl } from '../../config'
 import { Clock, DollarSign } from 'lucide-react'
 
 interface ServiceCardProps {
@@ -33,13 +31,6 @@ export const ServiceCard: React.FC<ServiceCardProps> = ({ service }) => {
         </div>
         
         <CardHeader className="p-4 pb-2">
-          <div className="flex items-center space-x-2 mb-2">
-            <Avatar className="h-6 w-6">
-              <AvatarImage src={service.provider_avatar ? getApiUrl(`/api/profile/picture/${service.provider_avatar}`) : undefined} />
-              <AvatarFallback>{service.provider_name?.charAt(0) || '?'}</AvatarFallback>
-            </Avatar>
-            <span className="text-sm text-gray-600 font-medium truncate">{service.provider_name}</span>
-          </div>
           <h3 className="font-semibold text-lg line-clamp-2 leading-tight group-hover:text-blue-600">
             {service.title}
           </h3>
