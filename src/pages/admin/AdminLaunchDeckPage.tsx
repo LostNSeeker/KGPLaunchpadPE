@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom'
 import { motion } from 'framer-motion'
 import {
   Bell, CheckCircle, TrendingUp, Rocket,
-  HandHeart, UserCheck, ExternalLink
+  HandHeart, UserCheck, ExternalLink, Tag, Calendar, User
 } from 'lucide-react'
 import { getApiUrl } from '../../config'
 import { useAuth } from '../../contexts/AuthContext'
@@ -44,16 +44,27 @@ interface MentorshipReq {
   mentor_name: string | null
 }
 
+interface Pitch {
+  id: number
+  title: string
+  tagline?: string
+  category?: string
+  status: string
+  founder_name?: string
+  created_at: string
+}
+
 interface Mentor {
   id: number
   name: string
 }
 
-type Tab = 'notifications' | 'interests' | 'mentorship'
+type Tab = 'pitches' | 'interests' | 'mentorship' | 'notifications'
 
 export const AdminLaunchDeckPage: React.FC = () => {
   const { token } = useAuth()
-  const [activeTab, setActiveTab] = useState<Tab>('notifications')
+  const [activeTab, setActiveTab] = useState<Tab>('pitches')
+  const [pitches, setPitches] = useState<Pitch[]>([])
   const [notifications, setNotifications] = useState<Notification[]>([])
   const [interests, setInterests] = useState<Interest[]>([])
   const [mentorshipRequests, setMentorshipRequests] = useState<MentorshipReq[]>([])
@@ -70,7 +81,17 @@ export const AdminLaunchDeckPage: React.FC = () => {
     setLoading(true)
     try {
       const headers = { Authorization: `Bearer ${token}` }
-      if (activeTab === 'notifications') {
+      if (activeTab === 'pitches') {
+        const res = await fetch(getApiUrl('/api/launchdeck/pitches'), { headers })
+        if (res.ok) {
+          const data = await res.json()
+          // Sort newest first
+          const sorted = [...(Array.isArray(data) ? data : [])].sort(
+            (a, b) => new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+          )
+          setPitches(sorted)
+        }
+      } else if (activeTab === 'notifications') {
         const res = await fetch(getApiUrl('/api/launchdeck/admin/notifications'), { headers })
         if (res.ok) setNotifications(await res.json())
       } else if (activeTab === 'interests') {
@@ -145,17 +166,24 @@ export const AdminLaunchDeckPage: React.FC = () => {
 
   const statusBadge = (status: string) => {
     const colors: Record<string, string> = {
-      pending: 'bg-yellow-100 text-yellow-700', admin_notified: 'bg-blue-100 text-blue-700',
-      meeting_setup: 'bg-green-100 text-green-700', assigned: 'bg-indigo-100 text-indigo-700',
-      accepted: 'bg-green-100 text-green-700', declined: 'bg-red-100 text-red-700'
+      pending: 'bg-yellow-100 text-yellow-700',
+      admin_notified: 'bg-blue-100 text-blue-700',
+      meeting_setup: 'bg-green-100 text-green-700',
+      assigned: 'bg-indigo-100 text-indigo-700',
+      accepted: 'bg-green-100 text-green-700',
+      declined: 'bg-red-100 text-red-700',
+      published: 'bg-emerald-100 text-emerald-700',
+      draft: 'bg-gray-100 text-gray-600',
+      closed: 'bg-red-100 text-red-600',
     }
     return <span className={`px-2.5 py-0.5 rounded-full text-xs font-semibold ${colors[status] || 'bg-gray-100 text-gray-600'}`}>{status.replace('_', ' ')}</span>
   }
 
   const tabs: Array<{ key: Tab; label: string; icon: React.FC<{ className?: string }>; badge?: number }> = [
-    { key: 'notifications', label: 'Notifications', icon: Bell, badge: unreadCount },
+    { key: 'pitches', label: 'New Pitches', icon: Rocket },
     { key: 'interests', label: 'Investor Interests', icon: TrendingUp },
-    { key: 'mentorship', label: 'Mentorship', icon: HandHeart }
+    { key: 'mentorship', label: 'Mentorship', icon: HandHeart },
+    { key: 'notifications', label: 'Notifications', icon: Bell, badge: unreadCount },
   ]
 
   return (
@@ -165,13 +193,14 @@ export const AdminLaunchDeckPage: React.FC = () => {
           <h1 className="text-3xl font-bold text-gray-900 flex items-center gap-3">
             <Rocket className="w-8 h-8 text-indigo-500" /> LaunchDeck Admin
           </h1>
-          <p className="text-gray-500 text-sm mt-1">Manage investor interests, mentorship requests, and notifications</p>
+          <p className="text-gray-500 text-sm mt-1">Review incoming pitches, investor alignments, mentorship requests, and notifications</p>
         </div>
 
-        <div className="flex bg-white rounded-xl border border-gray-200 p-1 mb-6">
+        {/* Tabs */}
+        <div className="flex bg-white rounded-xl border border-gray-200 p-1 mb-6 gap-1 overflow-x-auto">
           {tabs.map(tab => (
             <button key={tab.key} onClick={() => setActiveTab(tab.key)}
-              className={`flex-1 flex items-center justify-center gap-2 py-2.5 rounded-lg text-sm font-medium transition-all ${
+              className={`flex-1 flex items-center justify-center gap-2 py-2.5 px-3 rounded-lg text-sm font-medium transition-all whitespace-nowrap ${
                 activeTab === tab.key ? 'bg-indigo-600 text-white shadow-sm' : 'text-gray-500 hover:text-gray-700 hover:bg-gray-50'
               }`}>
               <tab.icon className="w-4 h-4" /> {tab.label}
@@ -188,38 +217,48 @@ export const AdminLaunchDeckPage: React.FC = () => {
           </div>
         ) : (
           <div className="space-y-3">
-            {/* Notifications Tab */}
-            {activeTab === 'notifications' && (
-              notifications.length === 0 ? (
+
+            {/* Pitches Tab */}
+            {activeTab === 'pitches' && (
+              pitches.length === 0 ? (
                 <div className="text-center py-16 bg-white rounded-2xl border border-gray-100">
-                  <Bell className="w-10 h-10 text-gray-300 mx-auto mb-3" />
-                  <p className="text-gray-500">No notifications</p>
+                  <Rocket className="w-10 h-10 text-gray-300 mx-auto mb-3" />
+                  <p className="text-gray-500">No pitches yet</p>
                 </div>
-              ) : notifications.map((notif, idx) => (
-                <motion.div key={notif.id} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.03 }}
-                  className={`bg-white rounded-xl p-4 border transition-all ${notif.is_read ? 'border-gray-100' : 'border-indigo-200 bg-indigo-50/30'}`}>
-                  <div className="flex items-center justify-between gap-4">
-                    <div className="flex items-center gap-3 flex-1">
-                      <div className={`p-2 rounded-lg ${notif.type === 'interest_request' ? 'bg-green-100' : 'bg-purple-100'}`}>
-                        {notif.type === 'interest_request'
-                          ? <TrendingUp className="w-4 h-4 text-green-600" />
-                          : <HandHeart className="w-4 h-4 text-purple-600" />}
+              ) : pitches.map((pitch, idx) => (
+                <motion.div key={pitch.id} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.03 }}
+                  className="bg-white rounded-xl p-5 border border-gray-100 shadow-sm hover:shadow-md transition-shadow">
+                  <div className="flex items-start justify-between gap-4">
+                    <div className="flex-1">
+                      <div className="flex items-center gap-3 mb-2 flex-wrap">
+                        <h3 className="font-semibold text-gray-900 text-base">{pitch.title}</h3>
+                        {statusBadge(pitch.status)}
                       </div>
-                      <div>
-                        <p className={`text-sm ${notif.is_read ? 'text-gray-600' : 'text-gray-900 font-medium'}`}>{notif.message}</p>
-                        <p className="text-xs text-gray-400 mt-0.5">{new Date(notif.created_at).toLocaleString()}</p>
-                      </div>
-                    </div>
-                    <div className="flex items-center gap-2">
-                      <Link to={`/launchdeck/pitch/${notif.reference_id}`} className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-indigo-600">
-                        <ExternalLink className="w-4 h-4" />
-                      </Link>
-                      {!notif.is_read && (
-                        <button onClick={() => markNotifRead(notif.id)} className="p-1.5 rounded-lg hover:bg-green-50 text-gray-400 hover:text-green-600">
-                          <CheckCircle className="w-4 h-4" />
-                        </button>
+                      {pitch.tagline && (
+                        <p className="text-sm text-gray-500 mb-2 italic">"{pitch.tagline}"</p>
                       )}
+                      <div className="flex items-center gap-4 text-xs text-gray-400 flex-wrap">
+                        {pitch.founder_name && (
+                          <span className="flex items-center gap-1">
+                            <User className="w-3 h-3" /> {pitch.founder_name}
+                          </span>
+                        )}
+                        {pitch.category && (
+                          <span className="flex items-center gap-1">
+                            <Tag className="w-3 h-3" /> {pitch.category}
+                          </span>
+                        )}
+                        <span className="flex items-center gap-1">
+                          <Calendar className="w-3 h-3" /> {new Date(pitch.created_at).toLocaleDateString()}
+                        </span>
+                      </div>
                     </div>
+                    <Link
+                      to={`/launchdeck/pitch/${pitch.id}`}
+                      className="flex items-center gap-1.5 px-3 py-1.5 bg-indigo-50 hover:bg-indigo-100 text-indigo-700 rounded-lg text-xs font-medium transition-colors whitespace-nowrap"
+                    >
+                      <ExternalLink className="w-3 h-3" /> View Pitch
+                    </Link>
                   </div>
                 </motion.div>
               ))
@@ -310,6 +349,44 @@ export const AdminLaunchDeckPage: React.FC = () => {
                 </motion.div>
               ))
             )}
+
+            {/* Notifications Tab */}
+            {activeTab === 'notifications' && (
+              notifications.length === 0 ? (
+                <div className="text-center py-16 bg-white rounded-2xl border border-gray-100">
+                  <Bell className="w-10 h-10 text-gray-300 mx-auto mb-3" />
+                  <p className="text-gray-500">No notifications</p>
+                </div>
+              ) : notifications.map((notif, idx) => (
+                <motion.div key={notif.id} initial={{ opacity: 0, y: 5 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: idx * 0.03 }}
+                  className={`bg-white rounded-xl p-4 border transition-all ${notif.is_read ? 'border-gray-100' : 'border-indigo-200 bg-indigo-50/30'}`}>
+                  <div className="flex items-center justify-between gap-4">
+                    <div className="flex items-center gap-3 flex-1">
+                      <div className={`p-2 rounded-lg ${notif.type === 'interest_request' ? 'bg-green-100' : 'bg-purple-100'}`}>
+                        {notif.type === 'interest_request'
+                          ? <TrendingUp className="w-4 h-4 text-green-600" />
+                          : <HandHeart className="w-4 h-4 text-purple-600" />}
+                      </div>
+                      <div>
+                        <p className={`text-sm ${notif.is_read ? 'text-gray-600' : 'text-gray-900 font-medium'}`}>{notif.message}</p>
+                        <p className="text-xs text-gray-400 mt-0.5">{new Date(notif.created_at).toLocaleString()}</p>
+                      </div>
+                    </div>
+                    <div className="flex items-center gap-2">
+                      <Link to={`/launchdeck/pitch/${notif.reference_id}`} className="p-1.5 rounded-lg hover:bg-gray-100 text-gray-400 hover:text-indigo-600">
+                        <ExternalLink className="w-4 h-4" />
+                      </Link>
+                      {!notif.is_read && (
+                        <button onClick={() => markNotifRead(notif.id)} className="p-1.5 rounded-lg hover:bg-green-50 text-gray-400 hover:text-green-600">
+                          <CheckCircle className="w-4 h-4" />
+                        </button>
+                      )}
+                    </div>
+                  </div>
+                </motion.div>
+              ))
+            )}
+
           </div>
         )}
       </div>

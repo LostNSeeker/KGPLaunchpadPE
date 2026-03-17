@@ -411,8 +411,8 @@ export const ProfilePage: React.FC = () => {
   const ongoingProjects = appliedProjects.filter(p => p.application_status === 'accepted' && p.status === 'active' && !p.is_completed)
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50">
-      <div className="container mx-auto px-4 max-w-7xl py-8">
+    <div className="min-h-screen bg-gradient-to-br from-blue-50 via-white to-purple-50 pt-24">
+      <div className="container mx-auto px-4 max-w-7xl pb-8">
         {/* Header Section */}
         <div className="relative mb-8">
           <div className="bg-gradient-to-r from-blue-600 to-purple-600 rounded-2xl p-8 text-white">

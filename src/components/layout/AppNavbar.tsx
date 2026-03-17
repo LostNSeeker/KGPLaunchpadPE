@@ -111,7 +111,7 @@ export const AppNavbar: React.FC = () => {
       {/* Click outside handler for the profile menu */}
       {isProfileMenuOpen && (
         <div
-          className="fixed inset-0 z-[70]"
+          className="fixed inset-0 z-[49]"
           onClick={() => setIsProfileMenuOpen(false)}
         />
       )}
@@ -185,7 +185,7 @@ export const AppNavbar: React.FC = () => {
                         onClick={() => {
                           logout()
                           setIsProfileMenuOpen(false)
-                          navigate('/')
+                          navigate('/login')
                         }}
                         className="flex w-full items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50"
                       >
@@ -287,7 +287,7 @@ export const AppNavbar: React.FC = () => {
                   onClick={() => {
                     logout()
                     setIsMobileMenuOpen(false)
-                    navigate('/')
+                    navigate('/login')
                   }}
                   className="flex w-full items-center px-4 py-2 text-sm text-red-600 hover:bg-red-50 rounded-md"
                 >

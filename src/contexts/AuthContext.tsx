@@ -25,6 +25,7 @@ interface AuthContextType {
   token: string | null
   login: (email: string, password: string) => Promise<boolean>
   register: (userData: RegisterData) => Promise<boolean>
+  loginWithToken: (token: string, user: User) => void
   logout: () => void
   isLoading: boolean
 }
@@ -139,6 +140,13 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     }
   }
 
+  const loginWithToken = (newToken: string, newUser: User) => {
+    setToken(newToken)
+    setUser(newUser)
+    localStorage.setItem('token', newToken)
+    localStorage.setItem('user', JSON.stringify(newUser))
+  }
+
   const logout = () => {
     setUser(null)
     setToken(null)
@@ -151,6 +159,7 @@ export const AuthProvider: React.FC<AuthProviderProps> = ({ children }) => {
     token,
     login,
     register,
+    loginWithToken,
     logout,
     isLoading,
   }

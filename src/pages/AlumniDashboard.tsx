@@ -43,7 +43,9 @@ export const AlumniDashboard: React.FC = () => {
   const [recentActivity, setRecentActivity] = useState<RecentActivity[]>([])
   const [loading, setLoading] = useState(true)
 
-  const alumniType = user?.alumni_type || 'Founder'
+  // Derive alumni type from alumni_type field, or fall back to role (for founder/mentor/investor roles)
+  const roleToAlumniType: Record<string, string> = { founder: 'Founder', mentor: 'Mentor', investor: 'Investor' }
+  const alumniType = user?.alumni_type || (user?.role ? roleToAlumniType[user.role] : undefined) || 'Founder'
 
   useEffect(() => {
     const loadData = async () => {

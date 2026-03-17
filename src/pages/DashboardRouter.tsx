@@ -21,10 +21,10 @@ export const DashboardRouter: React.FC = () => {
   // Route based on user role
   if (user.role === 'student') {
     return <Navigate to="/student-dashboard" replace />
-  } else if (user.role === 'alumni') {
-    return <Navigate to="/founders-dashboard" replace />
   } else if (user.role === 'admin') {
     return <Navigate to="/admin/dashboard" replace />
+  } else if (['alumni', 'founder', 'mentor', 'investor'].includes(user.role)) {
+    return <Navigate to="/founders-dashboard" replace />
   }
 
   // Fallback for unknown roles
